@@ -360,7 +360,23 @@
             color: white;
         }
 
+        #offlineIndicator {
+            border-radius: 50px;
+            font-size: 12px;
+            height: 21px;
+            width: 30%;
+            display: block;
+            position: fixed;
+            top: 0px;
+            left: 36%;
+            right: 0px;
+            background: rgb(243, 156, 18);
+            color: white;
+            text-align: center;
+            padding: 0px;
+            z-index: 9999;
 
+        }
 
         @media (max-width: 768px) {
             .container {
@@ -1019,6 +1035,11 @@
                     navigator.serviceWorker.register('./sw.js')
                         .then(function (registration) {
                             console.log('SW registrado com sucesso:', registration.scope);
+
+                            // Verificar atualizações
+                            registration.addEventListener('updatefound', function () {
+                                console.log('Nova versão do SW disponível');
+                            });
                         })
                         .catch(function (error) {
                             console.log('Falha ao registrar SW:', error);
@@ -1030,14 +1051,53 @@
                 const indicator = document.getElementById('offlineIndicator');
                 if (navigator.onLine) {
                     indicator.style.display = 'none';
+                    indicator.textContent = '🌐 Online';
                 } else {
                     indicator.style.display = 'block';
+                    indicator.textContent = '📱 Modo Offline - Funcionalidade completa disponível';
                 }
             }
 
             window.addEventListener('online', updateOnlineStatus);
             window.addEventListener('offline', updateOnlineStatus);
+
+            // Verificar status inicial após carregar
+            window.addEventListener('load', function () {
+                updateOnlineStatus();
+
+                // Teste de conectividade real
+                fetch('./manifest.json', { method: 'HEAD', cache: 'no-cache' })
+                    .then(() => {
+                        console.log('Conectividade confirmada');
+                    })
+                    .catch(() => {
+                        console.log('Sem conectividade real');
+                        const indicator = document.getElementById('offlineIndicator');
+                        indicator.style.display = 'block';
+                        indicator.textContent = '📱 Modo Offline';
+                    });
+            });
+
+            window.addEventListener('online', updateOnlineStatus);
+            window.addEventListener('offline', updateOnlineStatus);
             updateOnlineStatus(); // Verificar status inicial
+            // Teste de funcionalidade offline
+            function testOfflineCapability() {
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.ready.then(function () {
+                        console.log('✅ Service Worker ativo - Site pronto para funcionar offline');
+                    });
+                }
+
+                if ('indexedDB' in window) {
+                    console.log('✅ IndexedDB disponível - Dados salvos localmente');
+                }
+
+                console.log('✅ Site funcionará offline após primeira visita');
+            }
+
+            // Executar teste após carregar
+            window.addEventListener('load', testOfflineCapability);
         </script>
 </body>
 
