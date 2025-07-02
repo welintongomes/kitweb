@@ -360,23 +360,12 @@
             color: white;
         }
 
-        #offlineIndicator {
-            border-radius: 50px;
-            font-size: 12px;
-            height: 21px;
-            width: 30%;
-            display: block;
-            position: fixed;
-            top: 0px;
-            left: 36%;
-            right: 0px;
-            background: rgb(243, 156, 18);
-            color: white;
-            text-align: center;
-            padding: 0px;
-            z-index: 9999;
-
-        }
+#offlineIndicator {
+    border-radius: 50px;
+    font-size: 12px;
+    height: 21px;
+    width: 30%;
+}
 
         @media (max-width: 768px) {
             .container {
@@ -384,7 +373,7 @@
             }
 
             .header h1 {
-                font-size: 2em;
+                font-size: 1.5em;
             }
 
             .modal-content {
@@ -493,10 +482,9 @@
     <div class="container">
         <div class="header">
             <h1>🛠️Ferramentas</h1>
-            <div id="offlineIndicator"
-                style="display: none; position: fixed; top: 0; left: 0; right: 0; background: #f39c12; color: white; text-align: center; padding: 5px; z-index: 9999;">
-                📱 Modo Offline
-            </div>
+            <div id="offlineIndicator" style="display: none; position: fixed; top: 0; left: 0; right: 0; background: #f39c12; color: white; text-align: center; padding: 5px; z-index: 9999;">
+  📱 Modo Offline
+</div>
             <p></p>
         </div>
         <div class="sites-grid" id="sitesGrid">
@@ -1023,11 +1011,7 @@
             }
 
 
-            // Carregar sites ao iniciar
-            // Mudança: fazer a chamada async
-            (async () => {
-                await loadSites();
-            })();
+            
 
             //service worker para funcionamento offline
             if ('serviceWorker' in navigator) {
@@ -1098,6 +1082,11 @@
 
             // Executar teste após carregar
             window.addEventListener('load', testOfflineCapability);
+            // Carregar sites ao iniciar
+            // Mudança: fazer a chamada async
+            (async () => {
+                await loadSites();
+            })();
         </script>
 </body>
 
