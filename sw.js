@@ -1,8 +1,8 @@
 const CACHE_NAME = 'sites-manager-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  // Adicione outros arquivos se houver (CSS, JS externos, etc.)
+  './',
+  './index.html',
+  // Adicione outros arquivos que você tenha
 ];
 
 // Instalar o Service Worker
